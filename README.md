@@ -38,7 +38,7 @@ Transform your Gmail interface with stunning glassmorphism effects! This Chrome 
 
 ## 🚀 Installation
 
-### From Source (Developer Mode)
+### Quick Start
 
 1. **Clone or download this repository**:
    ```bash
@@ -58,6 +58,14 @@ Transform your Gmail interface with stunning glassmorphism effects! This Chrome 
    - Select the `gmail-glass-extension` folder
 
 5. **Done!** Open Gmail and enjoy your new glassmorphism interface
+
+### Need Help?
+
+📖 **[Read the Detailed Installation Guide](INSTALLATION.md)** for:
+- Step-by-step instructions with screenshots
+- Troubleshooting common issues
+- Customization tips
+- Browser compatibility information
 
 ### Future: Chrome Web Store
 This extension will be published to the Chrome Web Store soon for easy one-click installation.
@@ -192,8 +200,9 @@ MIT License - feel free to use, modify, and distribute!
 
 If you encounter any issues or have questions:
 1. Check the [Issues](https://github.com/MarcoJ03rgensen/gmail-glass-extension/issues) page
-2. Create a new issue with detailed information
-3. Include screenshots if possible
+2. Read the [Installation Guide](INSTALLATION.md) for troubleshooting
+3. Create a new issue with detailed information
+4. Include screenshots if possible
 
 ---
 
