@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gmail Glass - Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #9333ea 0%, #4f46e5 50%, #ec4899 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .canvas-wrapper {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        canvas {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin: 10px 0;
+            background: white;
+        }
+        button {
+            background: linear-gradient(135deg, #aa8ccc, #64b5f6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌟 Gmail Glass Icon Generator</h1>
+        <p style="text-align: center;">Generate icons for the Gmail Glass Chrome extension</p>
+        
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <h3>16x16</h3>
+                <canvas id="icon16" width="16" height="16"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon16', 16)">Download icon16.png</button>
+            </div>
+            <div class="canvas-wrapper">
+                <h3>48x48</h3>
+                <canvas id="icon48" width="48" height="48"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon48', 48)">Download icon48.png</button>
+            </div>
+            <div class="canvas-wrapper">
+                <h3>128x128</h3>
+                <canvas id="icon128" width="128" height="128"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon128', 128)">Download icon128.png</button>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="downloadAllIcons()" style="background: linear-gradient(135deg, #81c784, #64b5f6); font-size: 18px; padding: 15px 30px;">📦 Download All Icons</button>
+        </div>
+
+        <div class="instructions">
+            <h2>📋 Instructions</h2>
+            <ol>
+                <li><strong>Click "Download All Icons"</strong> or download each icon individually</li>
+                <li><strong>Create an "icons" folder</strong> in your gmail-glass-extension directory if it doesn't exist</li>
+                <li><strong>Move the downloaded PNG files</strong> into the icons folder:
+                    <ul>
+                        <li>icon16.png</li>
+                        <li>icon48.png</li>
+                        <li>icon128.png</li>
+                    </ul>
+                </li>
+                <li><strong>Reload the extension</strong> in Chrome (chrome://extensions/)</li>
+                <li><strong>Done!</strong> The extension should now load without errors</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#aa8ccc');
+            gradient.addColorStop(0.5, '#64b5f6');
+            gradient.addColorStop(1, '#f06292');
+            
+            // Draw rounded rectangle background
+            const radius = size * 0.15;
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            
+            // Draw glass effect overlay (lighter border)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = Math.max(1, size * 0.02);
+            ctx.beginPath();
+            ctx.roundRect(ctx.lineWidth/2, ctx.lineWidth/2, size - ctx.lineWidth, size - ctx.lineWidth, radius);
+            ctx.stroke();
+            
+            // Draw letter 'G' in the center
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.font = `bold ${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('G', size / 2, size / 2);
+        }
+        
+        function downloadIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadAllIcons() {
+            setTimeout(() => downloadIcon('icon16', 16), 100);
+            setTimeout(() => downloadIcon('icon48', 48), 300);
+            setTimeout(() => downloadIcon('icon128', 128), 500);
+        }
+        
+        // Draw all icons on page load
+        window.onload = function() {
+            drawIcon('icon16', 16);
+            drawIcon('icon48', 48);
+            drawIcon('icon128', 128);
+        };
+    </script>
+</body>
+</html>
