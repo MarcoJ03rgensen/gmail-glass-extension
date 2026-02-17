@@ -6,38 +6,117 @@
    Root Variables
    =========================== */
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.15);
-  --glass-bg-hover: rgba(255, 255, 255, 0.25);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-  --blur-amount: 12px;
+  /* Core glass */
+  --glass-bg: rgba(255, 255, 255, 0.14);
+  --glass-bg-hover: rgba(255, 255, 255, 0.22);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --glass-shadow: 0 16px 50px rgba(0, 0, 0, 0.16);
+  --blur-amount: 18px;
   --border-radius: 12px;
-  
-  /* Vibrant accent colors */
+
+  /* Vibrant accent colors (midway: colorful but not neon) */
   --accent-purple: rgba(170, 140, 204, 0.85);
   --accent-blue: rgba(100, 181, 246, 0.85);
-  --accent-pink: rgba(240, 98, 146, 0.85);
-  --accent-green: rgba(129, 199, 132, 0.85);
-  --accent-orange: rgba(255, 167, 38, 0.85);
+  --accent-pink: rgba(240, 98, 146, 0.82);
+  --accent-green: rgba(129, 199, 132, 0.82);
+  --accent-orange: rgba(255, 167, 38, 0.82);
 }
 
 /* ===========================
    Base Gmail Container
    =========================== */
-/* Main Gmail background with gradient */
+/* 
+  Swirly “mesh” background:
+  - Use multiple radial gradients for the soft blobs
+  - Add a subtle conic gradient for swirl/rotation energy
+  - Animate background-position slightly (very subtle)
+*/
+html,
 body {
-  background: linear-gradient(135deg, 
-    rgba(147, 51, 234, 0.1) 0%,
-    rgba(79, 70, 229, 0.1) 25%,
-    rgba(236, 72, 153, 0.1) 50%,
-    rgba(245, 158, 11, 0.1) 75%,
-    rgba(34, 197, 94, 0.1) 100%) !important;
+  background:
+    radial-gradient(1200px 800px at 12% 18%, rgba(240, 98, 146, 0.28), transparent 60%),
+    radial-gradient(1200px 800px at 82% 20%, rgba(100, 181, 246, 0.26), transparent 58%),
+    radial-gradient(1200px 800px at 35% 92%, rgba(129, 199, 132, 0.22), transparent 62%),
+    radial-gradient(900px 700px at 88% 80%, rgba(255, 167, 38, 0.18), transparent 62%),
+    conic-gradient(from 210deg at 50% 50%, rgba(170, 140, 204, 0.14), rgba(100, 181, 246, 0.10), rgba(240, 98, 146, 0.10), rgba(255, 167, 38, 0.10), rgba(129, 199, 132, 0.10), rgba(170, 140, 204, 0.14));
   background-attachment: fixed !important;
+  animation: gg-swirls 18s ease-in-out infinite alternate;
 }
 
-/* Main content wrapper */
+@keyframes gg-swirls {
+  0% {
+    background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%;
+  }
+  100% {
+    background-position: 6% 4%, 96% 8%, 8% 96%, 92% 92%, 50% 50%;
+  }
+}
+
+/* Main content wrapper(s) */
 .nH {
   background: transparent !important;
+}
+
+/* Gmail also has other high-level wrappers that can be opaque depending on layout */
+.no,
+.nH > .nH,
+.nH .nH {
+  background: transparent !important;
+}
+
+/* ===========================
+   Generic “True Glass” Panels
+   =========================== */
+/* Apply the full glass recipe to major containers */
+.bkL,
+.ain,
+.ae4.aDM,
+.AO,
+.nH.aHU,
+.nH.if,
+.aDh,
+.M9,
+.Kj-JD,
+.dw,
+.J-M,
+.SK.AX,
+.nH.nn,
+.gb_Zd {
+  background: var(--glass-bg) !important;
+  backdrop-filter: blur(var(--blur-amount)) saturate(1.35) contrast(1.05) !important;
+  -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(1.35) contrast(1.05) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: var(--border-radius) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+/* Glass sheen / highlight */
+.bkL::before,
+.ain::before,
+.ae4.aDM::before,
+.AO::before,
+.nH.aHU::before,
+.nH.if::before,
+.aDh::before,
+.M9::before,
+.Kj-JD::before,
+.dw::before,
+.J-M::before,
+.SK.AX::before,
+.nH.nn::before,
+.gb_Zd::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.22),
+    rgba(255, 255, 255, 0.06) 35%,
+    rgba(255, 255, 255, 0.00) 60%
+  ) !important;
+  pointer-events: none !important;
 }
 
 /* ===========================
@@ -46,59 +125,55 @@ body {
 /* Sidebar container */
 .bkL,
 .ain {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
   border-right: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
 }
 
 /* Compose button */
 .T-I.T-I-KE.L3 {
   background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(calc(var(--blur-amount) - 4px)) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(calc(var(--blur-amount) - 4px)) saturate(1.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
   border-radius: var(--border-radius) !important;
-  box-shadow: 0 4px 20px rgba(100, 181, 246, 0.3) !important;
+  box-shadow: 0 8px 26px rgba(100, 181, 246, 0.26) !important;
   color: white !important;
-  font-weight: 500 !important;
-  transition: all 0.3s ease !important;
+  font-weight: 600 !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease !important;
 }
 
 .T-I.T-I-KE.L3:hover {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)) !important;
-  box-shadow: 0 6px 28px rgba(100, 181, 246, 0.4) !important;
+  box-shadow: 0 12px 36px rgba(100, 181, 246, 0.34) !important;
   transform: translateY(-2px) !important;
+  filter: saturate(1.05) !important;
 }
 
 /* Navigation items */
 .TN.bzz.aHS-bnt,
 .TO.NQ,
 .ain .TK {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.09) !important;
+  backdrop-filter: blur(12px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  border-radius: 10px !important;
   margin: 4px 8px !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  transition: all 0.25s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .TN.bzz.aHS-bnt:hover,
 .TO.NQ:hover,
 .ain .TK:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10) !important;
   transform: translateX(4px) !important;
 }
 
 /* Active/selected navigation item */
 .TN.bzz.aHS-bnt.nZ.aiq,
 .TO.NQ.n3.aiq {
-  background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 4px 16px rgba(100, 181, 246, 0.3) !important;
+  background: linear-gradient(90deg, rgba(100, 181, 246, 0.55), rgba(170, 140, 204, 0.55)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 26px rgba(100, 181, 246, 0.20) !important;
 }
 
 /* ===========================
@@ -107,84 +182,64 @@ body {
 /* Email list container */
 .ae4.aDM,
 .AO {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border-radius: var(--border-radius) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
   margin: 8px !important;
 }
 
 /* Individual email row */
 .zA {
   background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 8px !important;
+  backdrop-filter: blur(10px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
+  border-radius: 10px !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   margin: 4px 8px !important;
-  transition: all 0.25s ease !important;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 
 .zA:hover {
-  background: rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10) !important;
   transform: translateY(-2px) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.20) !important;
 }
 
 /* Selected email */
 .zA.x7 {
-  background: linear-gradient(90deg, 
-    rgba(100, 181, 246, 0.2), 
-    rgba(170, 140, 204, 0.2)) !important;
-  border: 1px solid rgba(100, 181, 246, 0.4) !important;
-  box-shadow: 0 4px 20px rgba(100, 181, 246, 0.2) !important;
+  background: linear-gradient(90deg, rgba(100, 181, 246, 0.20), rgba(170, 140, 204, 0.18)) !important;
+  border: 1px solid rgba(100, 181, 246, 0.30) !important;
+  box-shadow: 0 10px 26px rgba(100, 181, 246, 0.16) !important;
 }
 
 /* Unread email indicator */
 .zE {
-  font-weight: 600 !important;
+  font-weight: 650 !important;
 }
 
 .zA.zE {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-left: 3px solid var(--accent-blue) !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-left: 3px solid rgba(100, 181, 246, 0.70) !important;
 }
 
 /* ===========================
    Email Reading Pane
    =========================== */
-/* Main email view container */
-.nH.aHU,
-.nH.if {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border-radius: var(--border-radius) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  margin: 8px !important;
-}
-
 /* Email content area */
 .adn,
 .gs {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(14px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.2) !important;
+  border-radius: 12px !important;
   padding: 16px !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
 }
 
 /* Email header */
 .gE.iv.gt {
   background: rgba(255, 255, 255, 0.12) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 10px !important;
+  backdrop-filter: blur(12px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  border-radius: 12px !important;
   padding: 12px !important;
   border: 1px solid rgba(255, 255, 255, 0.18) !important;
   margin-bottom: 12px !important;
@@ -193,63 +248,36 @@ body {
 /* ===========================
    Top Toolbar
    =========================== */
-/* Search bar */
-.gb_Zd {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: var(--border-radius) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
-}
-
-.gb_Zd:hover,
-.gb_Zd:focus-within {
-  background: var(--glass-bg-hover) !important;
-  box-shadow: 0 6px 20px rgba(100, 181, 246, 0.15) !important;
-}
-
 /* Top action buttons */
 .G-Ni,
 .aqJ,
 .T-I {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 8px !important;
-  transition: all 0.25s ease !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(10px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 10px !important;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .G-Ni:hover,
 .aqJ:hover,
 .T-I:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10) !important;
   transform: translateY(-1px) !important;
 }
 
 /* ===========================
    Compose Window
    =========================== */
-/* Compose window container */
-.aDh,
-.M9 {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border-radius: var(--border-radius) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
-}
-
 /* Compose window header */
 .aDh .aYF,
 .M9 .aYF {
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: linear-gradient(135deg, rgba(170, 140, 204, 0.85), rgba(100, 181, 246, 0.85)) !important;
+  backdrop-filter: blur(14px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.2) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.26) !important;
   border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
 }
 
@@ -257,73 +285,24 @@ body {
 .aDh .Am,
 .M9 .Am {
   background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-/* Compose toolbar */
-.aDh .btC,
-.M9 .btC {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(12px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.15) !important;
 }
 
 /* Send button */
 .T-I.T-I-atl.L3 {
-  background: linear-gradient(135deg, var(--accent-green), var(--accent-blue)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 16px rgba(129, 199, 132, 0.3) !important;
+  background: linear-gradient(135deg, rgba(129, 199, 132, 0.85), rgba(100, 181, 246, 0.85)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 26px rgba(129, 199, 132, 0.20) !important;
   color: white !important;
-  font-weight: 500 !important;
-  transition: all 0.3s ease !important;
+  font-weight: 650 !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
 .T-I.T-I-atl.L3:hover {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-green)) !important;
-  box-shadow: 0 6px 24px rgba(129, 199, 132, 0.4) !important;
+  box-shadow: 0 14px 34px rgba(129, 199, 132, 0.28) !important;
   transform: translateY(-2px) !important;
-}
-
-/* ===========================
-   Modals & Popups
-   =========================== */
-/* Modal backgrounds */
-.Kj-JD,
-.dw {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border-radius: var(--border-radius) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Dropdown menus */
-.J-M,
-.SK.AX {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Menu items */
-.J-N,
-.SK.AX .J-N {
-  background: transparent !important;
-  border-radius: 6px !important;
-  transition: all 0.2s ease !important;
-}
-
-.J-N:hover,
-.SK.AX .J-N:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* ===========================
@@ -332,44 +311,30 @@ body {
 /* Label chips */
 .ar.as,
 .at {
-  background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.14) !important;
+  backdrop-filter: blur(10px) saturate(1.15) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  border-radius: 999px !important;
   padding: 4px 10px !important;
-  transition: all 0.2s ease !important;
+  transition: background 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .ar.as:hover,
 .at:hover {
-  background: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Category tabs */
-.aKz {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border-radius: 8px !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.aKz:hover {
-  background: rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10) !important;
 }
 
 /* Active category */
 .aKz.aKx {
-  background: linear-gradient(90deg, var(--accent-pink), var(--accent-orange)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background: linear-gradient(90deg, rgba(240, 98, 146, 0.50), rgba(255, 167, 38, 0.45)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.26) !important;
 }
 
 /* ===========================
    Scrollbars
    =========================== */
-/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
@@ -381,121 +346,30 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.20);
   border-radius: 6px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.28);
   background-clip: padding-box;
-}
-
-/* ===========================
-   Attachments & Files
-   =========================== */
-/* Attachment cards */
-.aZo,
-.brg {
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 10px !important;
-  transition: all 0.25s ease !important;
-}
-
-.aZo:hover,
-.brg:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-2px) !important;
-}
-
-/* ===========================
-   Settings & Preferences
-   =========================== */
-/* Settings panel */
-.nH.nn {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) !important;
-  border-left: 1px solid var(--glass-border) !important;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* ===========================
-   Accent Color Variations
-   =========================== */
-/* Important/starred items */
-.pG,
-.T-KT.aXw {
-  color: var(--accent-orange) !important;
-  filter: drop-shadow(0 0 4px rgba(255, 167, 38, 0.4));
-}
-
-/* Priority indicators */
-.WA.xY .Dj {
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-orange)) !important;
-  border-radius: 4px !important;
-}
-
-/* Success states */
-.vh,
-.vI {
-  color: var(--accent-green) !important;
-}
-
-/* ===========================
-   Responsive Adjustments
-   =========================== */
-@media (max-width: 1024px) {
-  :root {
-    --blur-amount: 10px;
-    --border-radius: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --blur-amount: 8px;
-    --border-radius: 8px;
-  }
-  
-  .zA {
-    margin: 2px 4px !important;
-  }
 }
 
 /* ===========================
    Animations
    =========================== */
 @keyframes glassShimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-/* Add shimmer effect to compose button */
 .T-I.T-I-KE.L3::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
   background-size: 200% 100%;
   animation: glassShimmer 3s infinite;
   border-radius: var(--border-radius);
@@ -507,25 +381,33 @@ body {
    =========================== */
 @media (prefers-color-scheme: dark) {
   :root {
-    --glass-bg: rgba(0, 0, 0, 0.25);
-    --glass-bg-hover: rgba(0, 0, 0, 0.35);
-    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(0, 0, 0, 0.28);
+    --glass-bg-hover: rgba(0, 0, 0, 0.36);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-shadow: 0 18px 60px rgba(0, 0, 0, 0.44);
+  }
+
+  html,
+  body {
+    background:
+      radial-gradient(1200px 800px at 12% 18%, rgba(240, 98, 146, 0.18), transparent 60%),
+      radial-gradient(1200px 800px at 82% 20%, rgba(100, 181, 246, 0.16), transparent 58%),
+      radial-gradient(1200px 800px at 35% 92%, rgba(129, 199, 132, 0.14), transparent 62%),
+      radial-gradient(900px 700px at 88% 80%, rgba(255, 167, 38, 0.12), transparent 62%),
+      conic-gradient(from 210deg at 50% 50%, rgba(170, 140, 204, 0.10), rgba(100, 181, 246, 0.08), rgba(240, 98, 146, 0.08), rgba(255, 167, 38, 0.08), rgba(129, 199, 132, 0.08), rgba(170, 140, 204, 0.10)) !important;
+    background-attachment: fixed !important;
   }
 }
 
 /* ===========================
    Accessibility
    =========================== */
-/* Ensure focus states are visible */
 *:focus-visible {
-  outline: 2px solid var(--accent-blue) !important;
+  outline: 2px solid rgba(100, 181, 246, 0.9) !important;
   outline-offset: 2px !important;
 }
 
-/* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
+  * { animation: none !important; transition: none !important; }
+  html, body { animation: none !important; }
 }
