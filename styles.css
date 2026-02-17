@@ -6,408 +6,578 @@
    Root Variables
    =========================== */
 :root {
-  /* Core glass */
-  --glass-bg: rgba(255, 255, 255, 0.14);
-  --glass-bg-hover: rgba(255, 255, 255, 0.22);
-  --glass-border: rgba(255, 255, 255, 0.28);
-  --glass-shadow: 0 16px 50px rgba(0, 0, 0, 0.16);
-  --blur-amount: 18px;
-  --border-radius: 12px;
-
-  /* Vibrant accent colors (midway: colorful but not neon) */
-  --accent-purple: rgba(170, 140, 204, 0.85);
-  --accent-blue: rgba(100, 181, 246, 0.85);
-  --accent-pink: rgba(240, 98, 146, 0.82);
-  --accent-green: rgba(129, 199, 132, 0.82);
-  --accent-orange: rgba(255, 167, 38, 0.82);
+  --gg-glass-bg: rgba(255, 255, 255, 0.18);
+  --gg-glass-border: rgba(255, 255, 255, 0.10);
+  --gg-glass-shadow: 0 24px 72px rgba(2, 6, 23, 0.55);
+  --gg-blur: 22px;
+  --gg-radius: 16px;
+  --gg-purple: rgba(205, 30, 255, 1);
+  --gg-blue: rgba(30, 120, 255, 1);
+  --gg-pink: rgba(255, 60, 140, 1);
+  --gg-green: rgba(30, 200, 120, 1);
+  --gg-orange: rgba(255, 150, 40, 1);
+  /* Smoothness / transitions */
+  --gg-trans: 360ms;
+  --gg-ease: cubic-bezier(.2,.9,.2,1);
+  /* global saturation multiplier (used in backdrop-filter) */
+  --gg-sat: 1.65;
 }
 
 /* ===========================
-   Base Gmail Container
+   1. Swirly Gradient Background
    =========================== */
-/* 
-  Swirly “mesh” background:
-  - Use multiple radial gradients for the soft blobs
-  - Add a subtle conic gradient for swirl/rotation energy
-  - Animate background-position slightly (very subtle)
-*/
-html,
-body {
+html {
+  min-height: 100vh !important;
   background:
-    radial-gradient(1200px 800px at 12% 18%, rgba(240, 98, 146, 0.28), transparent 60%),
-    radial-gradient(1200px 800px at 82% 20%, rgba(100, 181, 246, 0.26), transparent 58%),
-    radial-gradient(1200px 800px at 35% 92%, rgba(129, 199, 132, 0.22), transparent 62%),
-    radial-gradient(900px 700px at 88% 80%, rgba(255, 167, 38, 0.18), transparent 62%),
-    conic-gradient(from 210deg at 50% 50%, rgba(170, 140, 204, 0.14), rgba(100, 181, 246, 0.10), rgba(240, 98, 146, 0.10), rgba(255, 167, 38, 0.10), rgba(129, 199, 132, 0.10), rgba(170, 140, 204, 0.14));
+    radial-gradient(900px 700px at 8% 16%, var(--gg-pink) 0%, transparent 60%),
+    radial-gradient(1000px 700px at 86% 14%, var(--gg-blue) 0%, transparent 56%),
+    radial-gradient(900px 700px at 30% 88%, var(--gg-green) 0%, transparent 60%),
+    radial-gradient(700px 600px at 86% 86%, var(--gg-orange) 0%, transparent 62%),
+    radial-gradient(600px 500px at 52% 52%, var(--gg-purple) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(6,8,20,0.98), rgba(12,16,32,0.98)) !important;
   background-attachment: fixed !important;
-  animation: gg-swirls 18s ease-in-out infinite alternate;
+  animation: gg-swirls 32s ease-in-out infinite;
+  background-blend-mode: screen;
 }
 
 @keyframes gg-swirls {
-  0% {
-    background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%;
-  }
-  100% {
-    background-position: 6% 4%, 96% 8%, 8% 96%, 92% 92%, 50% 50%;
-  }
-}
-
-/* Main content wrapper(s) */
-.nH {
-  background: transparent !important;
-}
-
-/* Gmail also has other high-level wrappers that can be opaque depending on layout */
-.no,
-.nH > .nH,
-.nH .nH {
-  background: transparent !important;
+  0% { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 50% 50%; }
+  100% { background-position: 6% 4%, 96% 8%, 8% 96%, 92% 92%, 50% 50%; }
 }
 
 /* ===========================
-   Generic “True Glass” Panels
+   2. NUCLEAR TRANSPARENCY
+   Force ALL Gmail containers transparent so gradient shows through.
    =========================== */
-/* Apply the full glass recipe to major containers */
-.bkL,
-.ain,
-.ae4.aDM,
-.AO,
-.nH.aHU,
-.nH.if,
-.aDh,
-.M9,
-.Kj-JD,
-.dw,
-.J-M,
-.SK.AX,
-.nH.nn,
-.gb_Zd {
-  background: var(--glass-bg) !important;
-  backdrop-filter: blur(var(--blur-amount)) saturate(1.35) contrast(1.05) !important;
-  -webkit-backdrop-filter: blur(var(--blur-amount)) saturate(1.35) contrast(1.05) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  border-radius: var(--border-radius) !important;
+body,
+body > div,
+body > div > div,
+body > div > div > div,
+body > div > div > div > div,
+body > div > div > div > div > div {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* ===========================
+   3. JS-applied glass classes
+   The content script adds these class names to detected elements.
+   =========================== */
+
+/* --- Sidebar (left nav panel) --- */
+.gg-sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)), rgba(255,255,255,0.04) !important;
+  backdrop-filter: blur(18px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(var(--gg-sat)) !important;
+  border-right: 1px solid rgba(255,255,255,0.02) !important;
+  padding: 10px 8px !important;
+  max-width: 240px !important;
+}
+
+/* --- Main email list area --- */
+.gg-main {
+  background: linear-gradient(180deg, rgba(80,160,255,0.03), rgba(195,70,230,0.02)), rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(var(--gg-blur)) saturate(var(--gg-sat)) contrast(1.04) !important;
+  -webkit-backdrop-filter: blur(var(--gg-blur)) saturate(var(--gg-sat)) contrast(1.04) !important;
+  border-radius: calc(var(--gg-radius) + 2px) !important;
+  margin: 8px !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  box-shadow: 0 18px 60px rgba(2,6,23,0.56) !important;
+  transition: background-color var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease), transform var(--gg-trans) var(--gg-ease);
+  will-change: transform, background-color;
+}
+
+/* Prevent stacked borders from nested matched containers */
+.gg-main .gg-main,
+.gg-sidebar .gg-sidebar,
+.gg-toolbar .gg-toolbar,
+.gg-row .gg-row,
+.gg-reading-pane .gg-reading-pane {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* --- Search bar --- */
+.gg-search {
+  background: rgba(255, 255, 255, 0.10) !important;
+  backdrop-filter: blur(14px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(var(--gg-sat)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 6px 26px rgba(2,6,23,0.28) !important;
+}
+.gg-search:focus-within {
+  border-color: var(--gg-blue) !important;
+  box-shadow: 0 6px 36px rgba(30,120,255,0.18) !important;
+}
+
+/* --- Compose button --- */
+.gg-compose {
+  background: linear-gradient(135deg, var(--gg-purple), var(--gg-blue)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-radius: 14px !important;
+  padding: 10px 14px !important;
+  font-size: 14px !important;
+  box-shadow: 0 18px 48px rgba(30,120,255,0.30), 0 8px 28px rgba(205,30,255,0.10) inset !important;
+  color: white !important;
   position: relative !important;
   overflow: hidden !important;
+  transition: transform var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease), filter var(--gg-trans) var(--gg-ease) !important;
+}
+.gg-compose:hover {
+  box-shadow: 0 22px 60px rgba(30,120,255,0.36), 0 10px 32px rgba(205,30,255,0.16) inset !important;
+  transform: translateY(-3px) scale(1.03) !important;
+  filter: saturate(1.12) !important;
 }
 
-/* Glass sheen / highlight */
-.bkL::before,
-.ain::before,
-.ae4.aDM::before,
-.AO::before,
-.nH.aHU::before,
-.nH.if::before,
-.aDh::before,
-.M9::before,
-.Kj-JD::before,
-.dw::before,
-.J-M::before,
-.SK.AX::before,
-.nH.nn::before,
-.gb_Zd::before {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.22),
-    rgba(255, 255, 255, 0.06) 35%,
-    rgba(255, 255, 255, 0.00) 60%
-  ) !important;
-  pointer-events: none !important;
-}
-
-/* ===========================
-   Left Sidebar - Navigation
-   =========================== */
-/* Sidebar container */
-.bkL,
-.ain {
-  border-right: 1px solid var(--glass-border) !important;
-}
-
-/* Compose button */
-.T-I.T-I-KE.L3 {
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)) !important;
-  backdrop-filter: blur(calc(var(--blur-amount) - 4px)) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(calc(var(--blur-amount) - 4px)) saturate(1.2) !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
-  border-radius: var(--border-radius) !important;
-  box-shadow: 0 8px 26px rgba(100, 181, 246, 0.26) !important;
-  color: white !important;
-  font-weight: 600 !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease !important;
-}
-
-.T-I.T-I-KE.L3:hover {
-  box-shadow: 0 12px 36px rgba(100, 181, 246, 0.34) !important;
-  transform: translateY(-2px) !important;
-  filter: saturate(1.05) !important;
-}
-
-/* Navigation items */
-.TN.bzz.aHS-bnt,
-.TO.NQ,
-.ain .TK {
-  background: rgba(255, 255, 255, 0.09) !important;
-  backdrop-filter: blur(12px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+/* --- Email rows --- */
+.gg-row {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  backdrop-filter: blur(8px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(var(--gg-sat)) !important;
   border-radius: 10px !important;
-  margin: 4px 8px !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
+  border: 1px solid rgba(255,255,255,0.02) !important;
+  margin: 6px 8px !important;
+  transition: background-color var(--gg-trans) var(--gg-ease), transform var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease);
+  will-change: transform, background-color;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
+}
+.gg-row:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)), linear-gradient(90deg, rgba(30,120,255,0.02), transparent) !important;
+  box-shadow: 0 10px 36px rgba(2,6,23,0.36), 0 4px 18px rgba(30,120,255,0.04) inset !important;
+  transform: translateY(-2px) !important;
+  border-color: rgba(255,255,255,0.06) !important;
 }
 
-.TN.bzz.aHS-bnt:hover,
-.TO.NQ:hover,
-.ain .TK:hover {
-  background: rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10) !important;
-  transform: translateX(4px) !important;
+/* Unread accent */
+.zA.zE,
+.gg-row.unread {
+  border-left: 4px solid var(--gg-blue) !important;
+  box-shadow: 0 6px 20px rgba(30,120,255,0.08) inset !important;
 }
 
-/* Active/selected navigation item */
-.TN.bzz.aHS-bnt.nZ.aiq,
-.TO.NQ.n3.aiq {
-  background: linear-gradient(90deg, rgba(100, 181, 246, 0.55), rgba(170, 140, 204, 0.55)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 10px 26px rgba(100, 181, 246, 0.20) !important;
+/* --- Nav items (sidebar links) --- */
+.gg-nav-item {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.02) !important;
+  margin: 4px 6px !important;
+  padding: 6px 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  min-height: 32px !important;
+  transition: background-color var(--gg-trans) var(--gg-ease), transform var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease);
+  will-change: transform, background-color;
+}
+.gg-nav-item:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)) !important;
+  transform: translateX(3px) !important;
 }
 
-/* ===========================
-   Email List View
-   =========================== */
-/* Email list container */
-.ae4.aDM,
-.AO {
-  margin: 8px !important;
+/* Prevent internal elements from drawing their own rounded boxes */
+.gg-sidebar .gg-nav-item * {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
-/* Individual email row */
-.zA {
+/* Active nav item */
+.gg-nav-active {
+  background: linear-gradient(90deg, var(--gg-blue), var(--gg-purple)) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 18px 44px rgba(30,120,255,0.24), 0 6px 18px rgba(205,30,255,0.12) inset !important;
+  transform: translateX(2px) !important;
+}
+
+/* Narrow / mobile adjustments */
+@media (max-width: 980px) {
+  .gg-sidebar {
+    padding: 10px 8px !important;
+    max-width: 220px !important;
+  }
+  .gg-sidebar .gg-nav-item {
+    border-radius: 12px !important;
+    padding: 8px 12px !important;
+    margin: 6px 4px !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.02)) !important;
+    min-height: 34px !important;
+  }
+  .gg-nav-item {
+    font-weight: 600 !important;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.20) !important;
+    font-size: 13px !important;
+  }
+}
+
+/* --- Toolbar --- */
+.gg-toolbar {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(10px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(var(--gg-sat)) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.02) !important;
+  border-radius: var(--gg-radius) var(--gg-radius) 0 0 !important;
+  transition: background-color var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease);
+  /* remove noisy pseudo-elements inside the toolbar */
+}
+
+/* suppress decorative pseudo-elements inside toolbar to avoid stacked circles */
+.gg-toolbar *::before,
+.gg-toolbar *::after {
+  display: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+}
+/* Topbar & toolbar icon subtle treatment — remove permanent circular plates and only show on hover */
+.gg-topbar .gg-icon-btn,
+.gg-sidebar .gg-icon-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 0.94 !important;
+}
+.gg-topbar .gg-icon-btn:hover,
+.gg-sidebar .gg-icon-btn:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  transform: translateY(-2px) scale(1.03) !important;
+}
+
+/* Ensure toolbar icons stay subtle but visible */
+.gg-toolbar .gg-icon-btn {
+  background: rgba(255,255,255,0.02) !important;
+  border: 1px solid rgba(255,255,255,0.02) !important;
+  box-shadow: none !important;
+}
+
+/* Prevent nested icon/button styling from creating layered circles */
+.gg-icon-btn .gg-icon-btn,
+.gg-toolbar .gg-icon-btn .gg-icon-btn,
+.gg-nav-item .gg-icon-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+/* --- Top bar / header (Google bar) --- */
+.gg-topbar {
+  background: linear-gradient(90deg, rgba(8,10,25,0.65), rgba(20,24,40,0.4)) !important;
+  backdrop-filter: blur(26px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(var(--gg-sat)) !important;
+  transition: background-color var(--gg-trans) var(--gg-ease);
+}
+
+/* --- Reading pane / email content --- */
+.gg-reading-pane {
   background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(10px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
-  border-radius: 10px !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  margin: 4px 8px !important;
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
-}
-
-.zA:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10) !important;
-  transform: translateY(-2px) !important;
-  border-color: rgba(255, 255, 255, 0.20) !important;
-}
-
-/* Selected email */
-.zA.x7 {
-  background: linear-gradient(90deg, rgba(100, 181, 246, 0.20), rgba(170, 140, 204, 0.18)) !important;
-  border: 1px solid rgba(100, 181, 246, 0.30) !important;
-  box-shadow: 0 10px 26px rgba(100, 181, 246, 0.16) !important;
-}
-
-/* Unread email indicator */
-.zE {
-  font-weight: 650 !important;
-}
-
-.zA.zE {
-  background: rgba(255, 255, 255, 0.14) !important;
-  border-left: 3px solid rgba(100, 181, 246, 0.70) !important;
-}
-
-/* ===========================
-   Email Reading Pane
-   =========================== */
-/* Email content area */
-.adn,
-.gs {
-  background: rgba(255, 255, 255, 0.10) !important;
-  backdrop-filter: blur(14px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.2) !important;
-  border-radius: 12px !important;
-  padding: 16px !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-}
-
-/* Email header */
-.gE.iv.gt {
-  background: rgba(255, 255, 255, 0.12) !important;
-  backdrop-filter: blur(12px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
-  border-radius: 12px !important;
+  backdrop-filter: blur(16px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.2) !important;
+  border-radius: var(--gg-radius) !important;
+  border: 1px solid var(--gg-glass-border) !important;
+  box-shadow: var(--gg-glass-shadow) !important;
   padding: 12px !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  margin-bottom: 12px !important;
 }
 
-/* ===========================
-   Top Toolbar
-   =========================== */
-/* Top action buttons */
-.G-Ni,
-.aqJ,
-.T-I {
-  background: rgba(255, 255, 255, 0.10) !important;
-  backdrop-filter: blur(10px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+/* --- Compose window (popup) --- */
+.gg-compose-window {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) !important;
+  backdrop-filter: blur(20px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(var(--gg-sat)) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  border-radius: calc(var(--gg-radius) - 4px) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28) !important;
+  color: inherit !important;
+}
+
+/* Compose internals: message body, subject and toolbar */
+.gg-compose-window .aYF,
+.gg-compose-window [role="toolbar"] {
+  background: linear-gradient(135deg, rgba(195,70,230,0.06), rgba(40,130,255,0.04)) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.03) !important;
+  padding: 8px 10px !important;
+  border-radius: calc(var(--gg-radius) - 8px) calc(var(--gg-radius) - 8px) 0 0 !important;
+}
+
+.gg-compose-window .Am,
+.gg-compose-window [contenteditable="true"],
+.gg-compose-window textarea {
+  background: rgba(255,255,255,0.02) !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+  color: inherit !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+}
+
+.gg-compose-window .aYF .T-I,
+.gg-compose-window .aYF .T-I:disabled {
+  color: inherit !important;
+}
+
+/* --- Dialogs / modals --- */
+.gg-dialog {
+  background: rgba(30, 30, 60, 0.75) !important;
+  backdrop-filter: blur(24px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.4) !important;
+  border: 1px solid var(--gg-glass-border) !important;
+  border-radius: var(--gg-radius) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30) !important;
+}
+
+/* --- Right-side panel (Chat, Meet, etc.) --- */
+.gg-right-panel {
+  background: rgba(255, 255, 255, 0.06) !important;
+  backdrop-filter: blur(16px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.2) !important;
+  border-left: 1px solid var(--gg-glass-border) !important;
+}
+
+/* ==========================
+   Button system: primary / secondary / icon / toggle / chip
+   ========================== */
+
+.gg-primary-btn,
+.gg-send-btn {
+  background: linear-gradient(135deg, var(--gg-purple), var(--gg-blue)) !important;
+  color: white !important;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  box-shadow: 0 22px 72px rgba(30,120,255,0.36) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px !important;
+  transition: transform var(--gg-trans) var(--gg-ease), box-shadow var(--gg-trans) var(--gg-ease), filter var(--gg-trans) var(--gg-ease), background-color var(--gg-trans) var(--gg-ease);
+  will-change: transform, box-shadow;
+  backdrop-filter: blur(10px) saturate(var(--gg-sat)) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(var(--gg-sat)) !important;
+}
+.gg-primary-btn:hover,
+.gg-send-btn:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 20px 60px rgba(29,78,216,0.32) !important;
+  filter: saturate(1.08) !important;
+}
+
+.gg-secondary-btn {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)) !important;
+  color: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
   border-radius: 10px !important;
-  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease !important;
+  padding: 6px 10px !important;
+  box-shadow: none !important;
+  transition: background-color var(--gg-trans) var(--gg-ease), transform var(--gg-trans) var(--gg-ease);
+}
+.gg-secondary-btn:hover {
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
 }
 
-.G-Ni:hover,
-.aqJ:hover,
-.T-I:hover {
-  background: rgba(255, 255, 255, 0.18) !important;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10) !important;
+.gg-icon-btn {
+  background: rgba(255,255,255,0.03) !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  box-shadow: none !important;
+  color: rgba(255,255,255,0.92) !important;
+  transition: transform var(--gg-trans) var(--gg-ease), background-color var(--gg-trans) var(--gg-ease);
+}
+.gg-icon-btn:hover {
+  transform: translateY(-2px) scale(1.03) !important;
+  background: rgba(255,255,255,0.08) !important;
+}
+
+.gg-toggle-btn.gg-pressed,
+.gg-toggle-btn[aria-pressed="true"] {
+  background: linear-gradient(90deg, rgba(40,130,255,0.28), rgba(195,70,230,0.22)) !important;
+  color: white !important;
+  box-shadow: 0 8px 24px rgba(40,130,255,0.18) inset !important;
+}
+
+.gg-chip {
+  background: rgba(255,255,255,0.04) !important;
+  border-radius: 999px !important;
+  padding: 4px 8px !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  color: rgba(255,255,255,0.88) !important;
+  font-size: 12px !important;
+}
+
+/* Focus for keyboard users */
+.gg-primary-btn:focus-visible,
+.gg-secondary-btn:focus-visible,
+.gg-icon-btn:focus-visible,
+.gg-chip:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(40,130,255,0.18), 0 8px 20px rgba(0,0,0,0.25) !important;
   transform: translateY(-1px) !important;
 }
 
-/* ===========================
-   Compose Window
-   =========================== */
-/* Compose window header */
-.aDh .aYF,
-.M9 .aYF {
-  background: linear-gradient(135deg, rgba(170, 140, 204, 0.85), rgba(100, 181, 246, 0.85)) !important;
-  backdrop-filter: blur(14px) saturate(1.2) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(1.2) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.26) !important;
-  border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+/* Toolbar-specific adjustments for buttons */
+.gg-toolbar .gg-icon-btn {
+  width: 40px !important;
+  height: 40px !important;
 }
-
-/* Compose body */
-.aDh .Am,
-.M9 .Am {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(12px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(1.15) !important;
-}
-
-/* Send button */
-.T-I.T-I-atl.L3 {
-  background: linear-gradient(135deg, rgba(129, 199, 132, 0.85), rgba(100, 181, 246, 0.85)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+.gg-toolbar .gg-secondary-btn {
+  padding: 6px 8px !important;
   border-radius: 10px !important;
-  box-shadow: 0 10px 26px rgba(129, 199, 132, 0.20) !important;
-  color: white !important;
-  font-weight: 650 !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-}
-
-.T-I.T-I-atl.L3:hover {
-  box-shadow: 0 14px 34px rgba(129, 199, 132, 0.28) !important;
-  transform: translateY(-2px) !important;
 }
 
 /* ===========================
-   Labels & Categories
+   4. Text readability on dark bg
    =========================== */
-/* Label chips */
-.ar.as,
-.at {
-  background: rgba(255, 255, 255, 0.14) !important;
-  backdrop-filter: blur(10px) saturate(1.15) !important;
-  -webkit-backdrop-filter: blur(10px) saturate(1.15) !important;
-  border: 1px solid rgba(255, 255, 255, 0.20) !important;
-  border-radius: 999px !important;
-  padding: 4px 10px !important;
-  transition: background 0.2s ease, box-shadow 0.2s ease !important;
+.gg-sidebar,
+.gg-sidebar * {
+  color: rgba(255, 255, 255, 0.90) !important;
 }
 
-.ar.as:hover,
-.at:hover {
-  background: rgba(255, 255, 255, 0.22) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10) !important;
+.gg-topbar,
+.gg-topbar * {
+  color: rgba(255, 255, 255, 0.90) !important;
 }
 
-/* Active category */
-.aKz.aKx {
-  background: linear-gradient(90deg, rgba(240, 98, 146, 0.50), rgba(255, 167, 38, 0.45)) !important;
-  border: 1px solid rgba(255, 255, 255, 0.26) !important;
+.gg-toolbar,
+.gg-toolbar * {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.gg-row,
+.gg-row * {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.gg-main,
+.gg-main > * {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.gg-reading-pane,
+.gg-reading-pane * {
+  color: rgba(255, 255, 255, 0.90) !important;
+}
+
+.gg-compose-window,
+.gg-compose-window * {
+  color: rgba(255, 255, 255, 0.90) !important;
 }
 
 /* ===========================
-   Scrollbars
+   5. Scrollbars
    =========================== */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 5px;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.20);
-  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 5px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.26);
   background-clip: padding-box;
 }
 
 /* ===========================
-   Animations
+   6. Compose shimmer animation
    =========================== */
-@keyframes glassShimmer {
+@keyframes gg-shimmer {
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
-.T-I.T-I-KE.L3::before {
+.gg-compose::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
   background-size: 200% 100%;
-  animation: glassShimmer 3s infinite;
-  border-radius: var(--border-radius);
+  animation: gg-shimmer 4s ease-in-out infinite;
+  border-radius: 18px;
   pointer-events: none;
 }
 
 /* ===========================
-   Dark Mode Support
+   7. Icon / avatar handling
+   - Preserve photographic avatars
+   - Invert/brighten small icon svgs & small images
    =========================== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --glass-bg: rgba(0, 0, 0, 0.28);
-    --glass-bg-hover: rgba(0, 0, 0, 0.36);
-    --glass-border: rgba(255, 255, 255, 0.14);
-    --glass-shadow: 0 18px 60px rgba(0, 0, 0, 0.44);
-  }
+/* SVG icons (safe to invert) */
+.gg-sidebar svg,
+.gg-toolbar svg,
+.gg-topbar svg,
+.gg-row svg {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.92 !important;
+}
 
-  html,
-  body {
-    background:
-      radial-gradient(1200px 800px at 12% 18%, rgba(240, 98, 146, 0.18), transparent 60%),
-      radial-gradient(1200px 800px at 82% 20%, rgba(100, 181, 246, 0.16), transparent 58%),
-      radial-gradient(1200px 800px at 35% 92%, rgba(129, 199, 132, 0.14), transparent 62%),
-      radial-gradient(900px 700px at 88% 80%, rgba(255, 167, 38, 0.12), transparent 62%),
-      conic-gradient(from 210deg at 50% 50%, rgba(170, 140, 204, 0.10), rgba(100, 181, 246, 0.08), rgba(240, 98, 146, 0.08), rgba(255, 167, 38, 0.08), rgba(129, 199, 132, 0.08), rgba(170, 140, 204, 0.10)) !important;
-    background-attachment: fixed !important;
+/* Small images used as icons (tagged by content script) */
+img.gg-icon-img,
+.gg-row img.gg-icon-img {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.85 !important;
+}
+
+/* Avatars / profile images - keep them natural */
+img.gg-avatar,
+.gg-avatar-img,
+.gg-avatar-wrap img {
+  filter: none !important;
+  opacity: 1 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.30) !important;
+  background-clip: padding-box !important;
+}
+
+/* ===========================
+   8. Reduced motion
+   =========================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 /* ===========================
-   Accessibility
+   EMERGENCY VISIBILITY OVERRIDES
+   Ensure Gmail message list and email content remain visible if they become hidden.
+   This is intentionally conservative and only affects common mail selectors.
    =========================== */
-*:focus-visible {
-  outline: 2px solid rgba(100, 181, 246, 0.9) !important;
-  outline-offset: 2px !important;
+[role="main"] .zA,
+[role="main"] .zA *,
+.ae4, .AO, .zA, .y6, .bog, .yX, .adn, .gs, .a3s, .nH .zA {
+  display: revert !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.94) !important;
+  background: transparent !important;
+  pointer-events: auto !important;
+  z-index: 1 !important;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
-  html, body { animation: none !important; }
+/* If Gmail uses light text inside dark panels, ensure contrast */
+[role="main"] .zA .y6, [role="main"] .zA .bog, [role="main"] .zA .yX {
+  color: rgba(255,255,255,0.94) !important;
+  opacity: 1 !important;
 }
+
+/* Compose/read content safety */
+.adn, .gs, .a3s {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: rgba(255,255,255,0.92) !important;
+}
+
